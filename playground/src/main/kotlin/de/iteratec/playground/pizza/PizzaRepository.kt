@@ -1,8 +1,6 @@
 package de.iteratec.playground.pizza
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import org.springframework.core.io.ClassPathResource
+import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import org.springframework.stereotype.Repository
 
 interface PizzaRepository {
@@ -11,15 +9,10 @@ interface PizzaRepository {
 
 @Repository
 class InMemoryPizzaRepository: PizzaRepository {
-    private val pizzas = listOf(
-        Pizza("Margherita", 1),
-        Pizza("Hawaii", 666)
+    private val pizzas = mutableListOf(
+        CheesePizza("Margherita", BigDecimal.fromInt(3)),
+        PeperoniPizza("Hawaii", BigDecimal.fromInt(666))
     )
 
     override fun findAll() = pizzas
-}
-
-@Repository
-class JsonPizzaRepository(val objectMapper: ObjectMapper): PizzaRepository {
-    override fun findAll(): List<Pizza> = objectMapper.readValue(ClassPathResource("pizza-list.json").inputStream)
 }
